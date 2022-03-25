@@ -66,7 +66,7 @@ namespace rtc::console
         size_t lower_limit,
         size_t upper_limit = std::numeric_limits<size_t>::max())
     {
-        size_t n{ 0 };
+        int n{ 0 };
         for (;;)
         {
             std::cout << message;
@@ -88,7 +88,7 @@ namespace rtc::console
             n = 0;
         }
         clear_istream(std::cin);
-        return n;
+        return static_cast<size_t>(n);
     }
 
 
@@ -120,7 +120,7 @@ namespace rtc::console
                 {
                     try
                     {
-                        size_t i{ std::stoul(s) };
+                        int i{ std::stol(s) };
                         if (i < lower_limit || i >= upper_limit)
                         {
                             std::cout << "\tError: number " << i << " not within the limits\n";
@@ -128,7 +128,7 @@ namespace rtc::console
                         }
                         else
                         {
-                            v.push_back(i);
+                            v.push_back(static_cast<size_t>(i));
                         }
                     }
                     catch (const std::invalid_argument& ex)
