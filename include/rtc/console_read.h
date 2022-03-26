@@ -60,11 +60,11 @@ namespace rtc::console
 
 
     // Read a positive number in the range [lower_limit, upper_limit)
-    // or [lower_limit, SIZE_T_MAX) in case upper_limit is not specified
-    inline size_t read_positive_number(
+    // or [lower_limit, INT_MAX) in case upper_limit is not specified
+    inline int read_positive_number(
         const std::string& message,
-        size_t lower_limit,
-        size_t upper_limit = std::numeric_limits<size_t>::max())
+        int lower_limit,
+        int upper_limit = std::numeric_limits<int>::max())
     {
         int n{ 0 };
         for (;;)
@@ -75,7 +75,7 @@ namespace rtc::console
             {
                 std::cout << "\tError: invalid input\n";
             }
-            else if (n < lower_limit || n >= upper_limit)
+            else if (n < 0 || n < lower_limit || n >= upper_limit)
             {
                 std::cout << "\tError: number not within the limits\n";
             }
@@ -88,19 +88,19 @@ namespace rtc::console
             n = 0;
         }
         clear_istream(std::cin);
-        return static_cast<size_t>(n);
+        return n;
     }
 
 
     // Read a list of positive numbers in the range [lower_limit, upper_limit)
-    // or [lower_limit, SIZE_T_MAX) in case upper_limit is not specified
+    // or [lower_limit, INT_MAX) in case upper_limit is not specified
     // minimum_list_size is the minimum number of the elements to read for the list
-    inline std::vector<size_t> read_list_of_positive_numbers(
+    inline std::vector<int> read_list_of_positive_numbers(
         size_t minimum_list_size,
-        size_t lower_limit,
-        size_t upper_limit = std::numeric_limits<size_t>::max())
+        int lower_limit,
+        int upper_limit = std::numeric_limits<int>::max())
     {
-        std::vector<size_t> v{};
+        std::vector<int> v{};
         while (v.size() < minimum_list_size)
         {
             std::cout << "Please enter " << minimum_list_size << " or more numbers "
@@ -121,14 +121,14 @@ namespace rtc::console
                     try
                     {
                         int i{ std::stol(s) };
-                        if (i < lower_limit || i >= upper_limit)
+                        if (i < 0 || i < lower_limit || i >= upper_limit)
                         {
                             std::cout << "\tError: number " << i << " not within the limits\n";
                             valid_input = false;
                         }
                         else
                         {
-                            v.push_back(static_cast<size_t>(i));
+                            v.push_back(i);
                         }
                     }
                     catch (const std::invalid_argument& ex)
