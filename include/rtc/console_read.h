@@ -2,6 +2,7 @@
 #define RTC_CONSOLE_READ_H
 
 #include <algorithm>  // binary_search, count_if, sort
+#include <charconv>  // from_chars
 #include <cctype>  // isdigit
 #include <ios>  // dec, streamsize
 #include <iostream>  // cin, cout
@@ -9,7 +10,8 @@
 #include <limits>  // numeric_limits
 #include <ostream>
 #include <stdexcept>  // invalid_argument, out_of_range
-#include <string>  // stoul
+#include <string>  // getline, stol
+#include <system_error>  // errc
 #include <vector>
 
 
@@ -62,33 +64,44 @@ namespace rtc::console
     // Read a positive number in the range [lower_limit, upper_limit)
     // or [lower_limit, INT_MAX) in case upper_limit is not specified
     inline int read_positive_number(
+        std::istream& is,
+        std::ostream& os,
         const std::string& message,
         int lower_limit,
         int upper_limit = std::numeric_limits<int>::max())
     {
-        int n{ 0 };
-        for (;;)
-        {
-            std::cout << message;
-            std::cin >> n;
-            if (std::cin.fail())
-            {
-                std::cout << "\tError: invalid input\n";
+        int n{0};
+        for (;;) {
+            os << message;
+            std::string n_str{};
+            std::getline(is, n_str);
+            auto [ptr, ec] { std::from_chars(n_str.data(), n_str.data() + n_str.size(), n) };
+            if (ec != std::errc{}) {
+                os << "\tError: invalid input\n";
             }
-            else if (n < 0 || n < lower_limit || n >= upper_limit)
-            {
-                std::cout << "\tError: number not within the limits\n";
+            else {
+                if (ptr != n_str.data() + n_str.size()) {
+                    os << "\tError: invalid input\n";
+                }
+                else if (n < 0 || n < lower_limit || n >= upper_limit) {
+                    os << "\tError: number not within the limits\n";
+                }
+                else {
+                    os << "\tOK\n";
+                    break;
+                }
             }
-            else if (is_istream_clear(std::cin))
-            {
-                std::cout << "\tOK\n";
-                break;
-            }
-            clear_istream(std::cin);
             n = 0;
         }
-        clear_istream(std::cin);
         return n;
+    }
+
+    inline int read_positive_number(
+        const std::string& message,
+        int lower_limit,
+        int upper_limit = std::numeric_limits<int>::max())
+    {
+        return read_positive_number(std::cin, std::cout, message, lower_limit, upper_limit);
     }
 
 
