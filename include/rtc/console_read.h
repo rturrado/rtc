@@ -4,11 +4,14 @@
 #include <algorithm>  // binary_search, count_if, sort
 #include <charconv>  // from_chars
 #include <cctype>  // isdigit
+#include <fmt/ranges.h>
+#include <fmt/ostream.h>
 #include <ios>  // dec, streamsize
 #include <iostream>  // cin, cout
 #include <istream>
 #include <limits>  // numeric_limits
 #include <ostream>
+#include <sstream>  // istringstream
 #include <stdexcept>  // invalid_argument, out_of_range
 #include <string>  // getline, stol
 #include <system_error>  // errc
@@ -20,7 +23,7 @@ namespace rtc::console
     // Check if input stream is clear
     inline bool is_istream_clear(const std::istream& is)
     {
-        return (is.rdbuf()->in_avail() == 1);  // a correct input will be followed by the ENTER character
+        return (is.rdbuf()->in_avail() == 0);
     }
 
 
@@ -36,28 +39,33 @@ namespace rtc::console
 
 
     // Read a char from a possible list of options
-    inline char read_char(const std::string& message, std::vector<char> options)
+    inline char read_char(
+        std::istream& is,
+        std::ostream& os,
+        const std::string& message,
+        std::vector<char> options)
     {
+        if (options.size() == 0) {
+            return '\0';
+        }
+
         std::sort(std::begin(options), std::end(options));
 
-        char c{};
-        for (;;)
-        {
-            std::cout << message;
-            std::cin >> c;
-            if (not std::cin.fail() and
-                std::binary_search(std::cbegin(options), std::cend(options), c) and
-                is_istream_clear(std::cin))
-            {
-                std::cout << "\tOK\n";
-                break;
+        for (;;) {
+            os << message;
+            std::string s{};
+            std::getline(is, s);
+            if (s.size() == 1 and std::binary_search(std::cbegin(options), std::cend(options), s[0])) {
+                os << "\tOK\n";
+                return s[0];
             }
-            std::cout << "\tError: invalid input\n";
-            clear_istream(std::cin);
-            c = 0;
+            os << "\tError: invalid input\n";
         }
-        clear_istream(std::cin);
-        return c;
+    }
+
+    inline char read_char(const std::string& message, std::vector<char> options)
+    {
+        return read_char(std::cin, std::cout, message, options);
     }
 
 
@@ -70,11 +78,13 @@ namespace rtc::console
         int lower_limit,
         int upper_limit = std::numeric_limits<int>::max())
     {
-        int n{0};
         for (;;) {
             os << message;
+
             std::string n_str{};
             std::getline(is, n_str);
+
+            int n{ 0 };
             auto [ptr, ec] { std::from_chars(n_str.data(), n_str.data() + n_str.size(), n) };
             if (ec != std::errc{}) {
                 os << "\tError: invalid input\n";
@@ -88,12 +98,10 @@ namespace rtc::console
                 }
                 else {
                     os << "\tOK\n";
-                    break;
+                    return n;
                 }
             }
-            n = 0;
         }
-        return n;
     }
 
     inline int read_positive_number(
@@ -108,62 +116,80 @@ namespace rtc::console
     // Read a list of positive numbers in the range [lower_limit, upper_limit)
     // or [lower_limit, INT_MAX) in case upper_limit is not specified
     // minimum_list_size is the minimum number of the elements to read for the list
+    // The list is expected to end with the string 'quit'
     inline std::vector<int> read_list_of_positive_numbers(
+        std::istream& is,
+        std::ostream& os,
+        const std::string& message,
         size_t minimum_list_size,
         int lower_limit,
         int upper_limit = std::numeric_limits<int>::max())
     {
-        std::vector<int> v{};
-        while (v.size() < minimum_list_size)
-        {
-            std::cout << "Please enter " << minimum_list_size << " or more numbers "
-                << "in the range [" << lower_limit << ", " << upper_limit << ")"
-                << " ('quit' to finish the list): ";
+        if (minimum_list_size == 0) {
+            return std::vector<int>{};
+        }
+        for (;;) {
+            os << message;
+            
+            std::vector<int> v{};
+            bool quit_read{ false };
             bool valid_input{ true };
-            for (std::string s{}; valid_input && std::cin >> s; )
-            {
-                if (s == "quit")
+
+            while ((not quit_read) and valid_input) {
+                std::string line{};
+                std::getline(is, line);  // read line
+
+                std::istringstream iss{ line };
+                for (std::string s{}; (not quit_read) and valid_input and iss >> s;)  // line can contain several tokens
                 {
-                    if (is_istream_clear(std::cin))
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        int i{ std::stol(s) };
-                        if (i < 0 || i < lower_limit || i >= upper_limit)
-                        {
-                            std::cout << "\tError: number " << i << " not within the limits\n";
+                    if (s == "quit") {
+                        if (not is_istream_clear(iss)) {
+                            os << "\tError: invalid input\n";
                             valid_input = false;
                         }
-                        else
-                        {
-                            v.push_back(i);
+                        else {
+                            quit_read = true;
                         }
                     }
-                    catch (const std::invalid_argument& ex)
-                    {
-                        std::cout << "\tError: " << ex.what() << "\n";
-                        valid_input = false;
-                    }
-                    catch (const std::out_of_range& ex)
-                    {
-                        std::cout << "\tError: " << ex.what() << "\n";
-                        valid_input = false;
+                    else {
+                        int i{ 0 };
+                        auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), i);
+                        if (ec == std::errc{}) {
+                            if (ptr != s.data() + s.size()) {
+                                os << "\tError: invalid input\n";
+                                valid_input = false;
+                            }
+                            else if (i < 0 || i < lower_limit || i >= upper_limit) {
+                                fmt::print(os, "\tError: number {} not within the limits\n", i);
+                                valid_input = false;
+                            }
+                            else {
+                                v.push_back(i);
+                            }
+                        }
+                        else {
+                            os << "\tError: invalid input\n";
+                            valid_input = false;
+                        }
                     }
                 }
             }
-            if (!valid_input || std::cin.fail() || v.size() < minimum_list_size)
-            {
-                clear_istream(std::cin);
-                v.erase(v.begin(), v.end());
+
+            if (quit_read and valid_input and v.size() >= minimum_list_size) {
+                os << "\tOK\n";
+                return v;
             }
         }
-        clear_istream(std::cin);
-        return v;
+    }
+
+
+    inline std::vector<int> read_list_of_positive_numbers(
+        const std::string& message,
+        size_t minimum_list_size,
+        int lower_limit,
+        int upper_limit = std::numeric_limits<int>::max())
+    {
+        return read_list_of_positive_numbers(std::cin, std::cout, message, minimum_list_size, lower_limit, upper_limit);
     }
 
 
