@@ -14,8 +14,7 @@ FetchContent_Declare(fmt
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
     GIT_TAG "7ffe87c0bc8e69cd38941b92c0b33ab2e5cf3c57"
 )
-FetchContent_Declare(
-    googletest
+FetchContent_Declare(googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
     GIT_TAG "af29db7ec28d6df1c7f0f745186884091e602e07"
 )
