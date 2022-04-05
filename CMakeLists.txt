@@ -18,7 +18,7 @@ target_include_directories(${PROJECT_NAME} INTERFACE
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
-if(BUILD_TESTS)
+if(RTC_BUILD_TESTS)
     enable_testing()
     add_subdirectory(test)
 endif()
