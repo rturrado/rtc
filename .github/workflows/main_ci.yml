@@ -1,0 +1,32 @@
+name: main CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  windows-debug-test:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DRTC_BUILD_TESTS=ON
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config Debug
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C Debug --output-on-failure
+  windows-release:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config Release
