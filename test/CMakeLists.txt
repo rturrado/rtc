@@ -7,6 +7,7 @@ set(test_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/stream.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/string.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/timer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/typeinfo.cpp"
 )
 
 include(FetchContent)
