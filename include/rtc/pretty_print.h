@@ -1,5 +1,4 @@
-#ifndef RTC_PRETTY_PRINT_H
-#define RTC_PRETTY_PRINT_H
+#pragma once
 
 #include <algorithm>  // fill_n
 #include <iterator>  // ostream_iterator
@@ -7,8 +6,7 @@
 #include <string>
 
 
-namespace rtc::pretty_print
-{
+namespace rtc::pretty_print {
     struct indentation {
         size_t level{};
         std::string value{ "    " };
@@ -25,8 +23,4 @@ namespace rtc::pretty_print
     inline indentation operator+(size_t increase, const indentation& i) {
         return i + increase;
     }
-
 }  // namespace rtc::pretty_print
-
-
-#endif  // RTC_PRETTY_PRINT_H

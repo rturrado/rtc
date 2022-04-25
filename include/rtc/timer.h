@@ -1,19 +1,15 @@
-#ifndef RTC_TIMER_H
-#define RTC_TIMER_H
+#pragma once
 
 #include <chrono>  // high_resolution_clock, microseconds
 #include <functional>  // invoke
 #include <utility>  // forward
 
 
-namespace rtc::timer
-{
+namespace rtc::timer {
     template <typename Time = std::chrono::microseconds, typename Clock = std::chrono::high_resolution_clock>
-    struct function_timer
-    {
+    struct function_timer {
         template <typename F, typename... Args>
-        static Time duration(F&& f, Args... args)
-        {
+        static Time duration(F&& f, Args... args) {
             auto start = Clock::now();
 
             std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
@@ -23,8 +19,4 @@ namespace rtc::timer
             return std::chrono::duration_cast<Time>(end - start);
         }
     };
-
 }  // namespace rtc::timer
-
-
-#endif  // RTC_TIMER_H

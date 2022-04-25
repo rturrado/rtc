@@ -4,6 +4,8 @@
 #include <gtest/gtest.h>
 #include <string>
 
+using namespace rtc::typeinfo;
+
 
 TEST(type_name, const_char) {
 #ifdef _MSC_VER

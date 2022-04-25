@@ -1,9 +1,12 @@
-#ifndef RTC_CONSOLE_READ_H
-#define RTC_CONSOLE_READ_H
+#pragma once
 
 #include <algorithm>  // binary_search, count_if, sort
 #include <charconv>  // from_chars
 #include <cctype>  // isdigit
+#if defined _WIN32
+#include <conio.h>  // _getch
+#endif
+#include <cstdlib>  // system
 #include <fmt/ranges.h>
 #include <fmt/ostream.h>
 #include <ios>  // dec, streamsize
@@ -18,21 +21,17 @@
 #include <vector>
 
 
-namespace rtc::console
-{
+namespace rtc::console {
     // Check if input stream is clear
-    inline bool is_istream_clear(const std::istream& is)
-    {
+    inline bool is_istream_clear(const std::istream& is) {
         return (is.rdbuf()->in_avail() == 0);
     }
 
 
     // Clear input stream
-    inline void clear_istream(std::istream& is)
-    {
+    inline void clear_istream(std::istream& is) {
         is.clear();
-        if (std::streamsize n = is.rdbuf()->in_avail())  // ignores whatever there may be within is
-        {
+        if (std::streamsize n = is.rdbuf()->in_avail()) {  // ignores whatever there may be within is
             is.ignore(n);
         }
     }
@@ -43,8 +42,8 @@ namespace rtc::console
         std::istream& is,
         std::ostream& os,
         const std::string& message,
-        std::vector<char> options)
-    {
+        std::vector<char> options) {
+
         if (options.size() == 0) {
             return '\0';
         }
@@ -63,8 +62,7 @@ namespace rtc::console
         }
     }
 
-    inline char read_char(const std::string& message, std::vector<char> options)
-    {
+    inline char read_char(const std::string& message, std::vector<char> options) {
         return read_char(std::cin, std::cout, message, options);
     }
 
@@ -76,8 +74,8 @@ namespace rtc::console
         std::ostream& os,
         const std::string& message,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max())
-    {
+        int upper_limit = std::numeric_limits<int>::max()) {
+
         for (;;) {
             os << message;
 
@@ -107,8 +105,8 @@ namespace rtc::console
     inline int read_positive_number(
         const std::string& message,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max())
-    {
+        int upper_limit = std::numeric_limits<int>::max()) {
+
         return read_positive_number(std::cin, std::cout, message, lower_limit, upper_limit);
     }
 
@@ -123,8 +121,8 @@ namespace rtc::console
         const std::string& message,
         size_t minimum_list_size,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max())
-    {
+        int upper_limit = std::numeric_limits<int>::max()) {
+
         if (minimum_list_size == 0) {
             return std::vector<int>{};
         }
@@ -140,8 +138,7 @@ namespace rtc::console
                 std::getline(is, line);  // read line
 
                 std::istringstream iss{ line };
-                for (std::string s{}; (not quit_read) and valid_input and iss >> s;)  // line can contain several tokens
-                {
+                for (std::string s{}; (not quit_read) and valid_input and iss >> s;) {  // line can contain several tokens
                     if (s == "quit") {
                         if (not is_istream_clear(iss)) {
                             os << "\tError: invalid input\n";
@@ -187,40 +184,57 @@ namespace rtc::console
         const std::string& message,
         size_t minimum_list_size,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max())
-    {
+        int upper_limit = std::numeric_limits<int>::max()) {
+
         return read_list_of_positive_numbers(std::cin, std::cout, message, minimum_list_size, lower_limit, upper_limit);
     }
 
 
     // Read an n-digit string
-    inline std::string read_n_digit_string(size_t n)
-    {
+    inline std::string read_n_digit_string(size_t n) {
         std::string ret{};
 
         bool valid_input{ false };
-        while (!valid_input)
-        {
+        while (!valid_input) {
             std::cout << "Please enter a " << n << " digit string: ";
             std::cin >> ret;
             if (ret.size() != n ||
-                std::count_if(ret.begin(), ret.end(), [](auto& n) { return std::isdigit(n) != 0; }) != 10)
-            {
+                std::count_if(ret.begin(), ret.end(), [](auto& n) { return std::isdigit(n) != 0; }) != 10) {
+
                 std::cout << "\tError: invalid input\n";
             }
-            else
-            {
+            else {
                 valid_input = true;
             }
-            if (!valid_input)
-            {
+            if (!valid_input) {
                 clear_istream(std::cin);
             }
         }
 
         return ret;
     }
+
+
+    inline void clear_screen()
+    {
+#if defined _WIN32
+        std::system("cls");
+#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+        std::system("clear");
+#elif defined (__APPLE__)
+        std::system("clear");
+#endif
+    }
+
+
+    inline void wait_for_key_pressed()
+    {
+#if defined _WIN32
+        [[maybe_unused]] int i = _getch();
+#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+        std::system("read");
+#elif defined (__APPLE__)
+        std::system("read");
+#endif
+    }
 }  // namespace rtc::console
-
-
-#endif  // RTC_CONSOLE_READ_H

@@ -1,21 +1,17 @@
-#ifndef RTC_RANDOM_H
-#define RTC_RANDOM_H
+#pragma once
 
 #include <concepts>  // floating_point
 #include <random>
 #include <string_view>
 
 
-namespace rtc::random
-{
+namespace rtc::random {
     // Random int generator
     // Generates a random int in the range [low, high]
-    class RandomInt
-    {
+    class random_int {
     public:
-        RandomInt(int low, int high) : low_{ low }, high_{ high } {}
-        int operator()()
-        {
+        random_int(int low, int high) : low_{ low }, high_{ high } {}
+        int operator()() {
             return std::uniform_int_distribution<int>{ low_, high_ }(engine_);
         }
     private:
@@ -27,12 +23,10 @@ namespace rtc::random
     // Random double generator
     // Generates a random double in the range [low, high]
     template <std::floating_point T = double>
-    class RandomFloatingPoint
-    {
+    class random_floating_point {
     public:
-        RandomFloatingPoint(T low, T high) : low_{ low }, high_{ high } {}
-        T operator()()
-        {
+        random_floating_point(T low, T high) : low_{ low }, high_{ high } {}
+        T operator()() {
             return std::uniform_real_distribution<T>{ low_, high_ }(engine_);
         }
     private:
@@ -44,11 +38,9 @@ namespace rtc::random
     // Random letter generator
     // Generates a random letter
     // Valid letters are the white space and the 26 letters of the English alphabet, both in uppercase and lowercase
-    class RandomLetter
-    {
+    class random_letter {
     public:
-        char operator()()
-        {
+        char operator()() {
             // Notice the first letter is intentionally blank
             static const std::string_view valid_letters{ " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" };
 
@@ -57,8 +49,4 @@ namespace rtc::random
     private:
         std::default_random_engine engine_{ std::random_device{}() };
     };
-
 }  // namespace rtc::random
-
-
-#endif  // RTC_RANDOM_H
