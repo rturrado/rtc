@@ -19,12 +19,16 @@ FetchContent_Declare(googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
     GIT_TAG "af29db7ec28d6df1c7f0f745186884091e602e07"
 )
+FetchContent_Declare(range-v3
+    GIT_REPOSITORY https://github.com/ericniebler/range-v3.git
+    GIT_TAG "d800a032132512a54c291ce55a2a43e0460591c7"
+)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(fmt googletest)
+FetchContent_MakeAvailable(fmt googletest range-v3)
 
 add_executable(${PROJECT_NAME}_test ${test_sources})
 target_compile_features(${PROJECT_NAME}_test PRIVATE cxx_std_23)
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} fmt gmock gtest_main)
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} fmt gmock gtest_main range-v3)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}_test)
