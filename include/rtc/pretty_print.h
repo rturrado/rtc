@@ -3,7 +3,6 @@
 #include <fmt/format.h>
 #include <fmt/ostream.h>
 #include <fmt/ranges.h>
-#include <iterator>  // ostream_iterator
 #include <ostream>
 #include <range/v3/view/repeat_n.hpp>
 #include <string>
