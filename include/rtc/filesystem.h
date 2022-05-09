@@ -15,11 +15,16 @@ namespace fs = std::filesystem;
 
 
 namespace rtc::filesystem {
-    struct file_path_does_not_exist_error : public std::runtime_error
-    {
+    struct file_path_does_not_exist_error : public std::runtime_error {
         file_path_does_not_exist_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
         static inline std::string message_{ "file path does not exist: " };
+    };
+    struct not_a_directory_error : public std::runtime_error
+    {
+        not_a_directory_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+    private:
+        static inline std::string message_{ "not a directory: " };
     };
 
     template <typename T = std::uint8_t>
