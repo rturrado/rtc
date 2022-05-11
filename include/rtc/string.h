@@ -6,8 +6,9 @@
 
 
 namespace rtc::string {
-    inline void to_lowercase(std::string& str) {
+    inline std::string to_lowercase(std::string str) {
         std::ranges::transform(str, std::begin(str), [](unsigned char c) { return std::tolower(c); });
+        return str;
     }
 
     inline auto trim_right(const std::string& str) {

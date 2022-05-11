@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project("rtc"
-    VERSION 1.0.5
+    VERSION 1.0.6
     DESCRIPTION "Some utilities I use in different C++ projects."
     HOMEPAGE_URL https://github.com/rturrado/rtc.git
     LANGUAGES CXX)
