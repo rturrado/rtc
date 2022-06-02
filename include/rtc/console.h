@@ -91,7 +91,7 @@ namespace rtc::console {
                 if (ptr != n_str.data() + n_str.size()) {
                     os << "\tError: invalid input\n";
                 }
-                else if (n < 0 || n < lower_limit || n >= upper_limit) {
+                else if (n < 0 or n < lower_limit or n >= upper_limit) {
                     os << "\tError: number not within the limits\n";
                 }
                 else {
