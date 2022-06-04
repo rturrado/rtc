@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project("rtc"
-    VERSION 1.0.6
+    VERSION 1.1
     DESCRIPTION "Some utilities I use in different C++ projects."
     HOMEPAGE_URL https://github.com/rturrado/rtc.git
     LANGUAGES CXX)
@@ -16,7 +16,7 @@ target_include_directories(${PROJECT_NAME} INTERFACE
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
 
 if(RTC_BUILD_TESTS)
     enable_testing()

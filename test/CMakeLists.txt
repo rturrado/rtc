@@ -21,7 +21,7 @@ FetchContent_Declare(googletest
 )
 FetchContent_Declare(range-v3
     GIT_REPOSITORY https://github.com/ericniebler/range-v3.git
-    GIT_TAG "d800a032132512a54c291ce55a2a43e0460591c7"
+    GIT_TAG "0fa54d7de5dc00655e38a08e87cda61f7aa6d5b9"
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(fmt googletest range-v3)

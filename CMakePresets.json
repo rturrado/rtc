@@ -1,0 +1,74 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 14,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "description": "Configure with vcpkg toolchain and generate Ninja project files for all configurations",
+            "binaryDir": "${sourceDir}/build/NinjaMultiConfig/${presetName}",
+            "generator": "Ninja Multi-Config",
+            "cacheVariables": {
+                "RANGE_V3_DOCS": false,
+                "RANGE_V3_EXAMPLES": false,
+                "RANGE_V3_TESTS": false
+            },
+            "debug": {
+                "output": true
+            }
+        },
+        {
+            "name": "test",
+            "inherits": "base",
+            "cacheVariables": {
+                "RTC_BUILD_TESTS": true
+            }
+        },
+        {
+            "name": "no-test",
+            "inherits": "base",
+            "cacheVariables": {
+                "RTC_BUILD_TESTS": false,
+                "BUILD_TESTING": false
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "x64-Debug-Test",
+            "configurePreset": "test",
+            "displayName": "Build x64-Debug-Test",
+            "description": "Build test Debug configuration",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "x64-Release-Test",
+            "configurePreset": "test",
+            "displayName": "Build x64-Release-Test",
+            "description": "Build test Release configuration",
+            "configuration": "Release",
+            "verbose": true
+        },
+        {
+            "name": "x64-Debug",
+            "configurePreset": "no-test",
+            "displayName": "Build x64-Debug",
+            "description": "Build Debug configuration",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "x64-Release",
+            "configurePreset": "no-test",
+            "displayName": "Build x64-Release",
+            "description": "Build Release configuration",
+            "configuration": "Release",
+            "verbose": true
+        }
+    ]
+}
