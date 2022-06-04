@@ -7,26 +7,22 @@ on:
     branches: [ main ]
 
 jobs:
-  windows-debug-test:
+  windows-x64-Debug-Test:
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
     steps:
     - uses: actions/checkout@v3
-    - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DRTC_BUILD_TESTS=ON
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config Debug
-    - name: Test
+    - name: Configure and build tests
+      run: |
+        cmake -preset test
+        cmake --build --preset x64-Debug-Test
+    - name: Run tests
       working-directory: ${{github.workspace}}/build
-      run: ctest -C Debug --output-on-failure
-  windows-release:
+      run: ctest --preset x64-Debug-Test --output-on-failure
+  windows-x64-Release:
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
     steps:
     - uses: actions/checkout@v3
-    - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config Release
+    - name: Configure and build no-tests
+      run: |
+        cmake --preset no-test
+        cmake --build --preset x64-Release
