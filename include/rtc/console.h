@@ -51,14 +51,14 @@ namespace rtc::console {
         std::sort(std::begin(options), std::end(options));
 
         for (;;) {
-            os << message;
+            fmt::print(os, "{}", message);
             std::string s{};
             std::getline(is, s);
             if (s.size() == 1 and std::binary_search(std::cbegin(options), std::cend(options), s[0])) {
-                os << "\tOK\n";
+                fmt::print(os, "\tOK\n");
                 return s[0];
             }
-            os << "\tError: invalid input\n";
+            fmt::print(os, "\tError: invalid input\n");
         }
     }
 
@@ -77,7 +77,7 @@ namespace rtc::console {
         int upper_limit = std::numeric_limits<int>::max()) {
 
         for (;;) {
-            os << message;
+            fmt::print(os, "{}", message);
 
             std::string n_str{};
             std::getline(is, n_str);
@@ -85,17 +85,14 @@ namespace rtc::console {
             int n{ 0 };
             auto [ptr, ec] { std::from_chars(n_str.data(), n_str.data() + n_str.size(), n) };
             if (ec != std::errc{}) {
-                os << "\tError: invalid input\n";
-            }
-            else {
+                fmt::print(os, "\tError: invalid input\n");
+            } else {
                 if (ptr != n_str.data() + n_str.size()) {
-                    os << "\tError: invalid input\n";
-                }
-                else if (n < 0 or n < lower_limit or n >= upper_limit) {
-                    os << "\tError: number not within the limits\n";
-                }
-                else {
-                    os << "\tOK\n";
+                    fmt::print(os, "\tError: invalid input\n");
+                } else if (n < 0 or n < lower_limit or n >= upper_limit) {
+                    fmt::print(os, "\tError: number not within the limits\n");
+                } else {
+                    fmt::print(os, "\tOK\n");
                     return n;
                 }
             }
@@ -127,7 +124,7 @@ namespace rtc::console {
             return std::vector<int>{};
         }
         for (;;) {
-            os << message;
+            fmt::print(os, "{}", message);
             
             std::vector<int> v{};
             bool quit_read{ false };
@@ -141,7 +138,7 @@ namespace rtc::console {
                 for (std::string s{}; (not quit_read) and valid_input and iss >> s;) {  // line can contain several tokens
                     if (s == "quit") {
                         if (not is_istream_clear(iss)) {
-                            os << "\tError: invalid input\n";
+                            fmt::print(os, "\tError: invalid input\n");
                             valid_input = false;
                         }
                         else {
@@ -153,7 +150,7 @@ namespace rtc::console {
                         auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), i);
                         if (ec == std::errc{}) {
                             if (ptr != s.data() + s.size()) {
-                                os << "\tError: invalid input\n";
+                                fmt::print(os, "\tError: invalid input\n");
                                 valid_input = false;
                             }
                             else if (i < 0 || i < lower_limit || i >= upper_limit) {
@@ -165,7 +162,7 @@ namespace rtc::console {
                             }
                         }
                         else {
-                            os << "\tError: invalid input\n";
+                            fmt::print(os, "\tError: invalid input\n");
                             valid_input = false;
                         }
                     }
@@ -173,7 +170,7 @@ namespace rtc::console {
             }
 
             if (quit_read and valid_input and v.size() >= minimum_list_size) {
-                os << "\tOK\n";
+                fmt::print(os, "\tOK\n");
                 return v;
             }
         }

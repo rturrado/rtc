@@ -13,7 +13,7 @@ set(test_sources
 include(FetchContent)
 FetchContent_Declare(fmt
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-    GIT_TAG "7ffe87c0bc8e69cd38941b92c0b33ab2e5cf3c57"
+    GIT_TAG "4bb3af7a6ba4330284fb490b0f471172fda87f07"
 )
 FetchContent_Declare(googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
