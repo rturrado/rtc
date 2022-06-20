@@ -20,6 +20,16 @@ namespace rtc::filesystem {
     private:
         static inline std::string message_{ "file path does not exist: " };
     };
+    struct file_is_not_regular_error : public std::runtime_error {
+        file_is_not_regular_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+    private:
+        static inline std::string message_{ "file is not regular: " };
+    };
+    struct file_has_no_filename_error : public std::runtime_error {
+        file_has_no_filename_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+    private:
+        static inline std::string message_{ "file has no filename: " };
+    };
     struct not_a_directory_error : public std::runtime_error {
         not_a_directory_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
