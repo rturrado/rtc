@@ -30,6 +30,11 @@ namespace rtc::filesystem {
     private:
         static inline std::string message_{ "file has no filename: " };
     };
+    struct could_not_open_file_error : public std::runtime_error {
+        could_not_open_file_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+    private:
+        static inline std::string message_{ "could not open file: " };
+    };
     struct not_a_directory_error : public std::runtime_error {
         not_a_directory_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
