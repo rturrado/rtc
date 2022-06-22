@@ -1,4 +1,5 @@
 set(test_sources
+    "${CMAKE_CURRENT_SOURCE_DIR}/chrono.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/console.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/filesystem.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/pretty_print.cpp"
