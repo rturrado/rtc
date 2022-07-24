@@ -74,7 +74,7 @@ namespace rtc::console {
         std::ostream& os,
         const std::string& message,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max()) {
+        int upper_limit = (std::numeric_limits<int>::max)()) {
 
         for (;;) {
             fmt::print(os, "{}", message);
@@ -102,7 +102,7 @@ namespace rtc::console {
     inline int read_positive_number(
         const std::string& message,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max()) {
+        int upper_limit = (std::numeric_limits<int>::max)()) {
 
         return read_positive_number(std::cin, std::cout, message, lower_limit, upper_limit);
     }
@@ -118,14 +118,14 @@ namespace rtc::console {
         const std::string& message,
         size_t minimum_list_size,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max()) {
+        int upper_limit = (std::numeric_limits<int>::max)()) {
 
         if (minimum_list_size == 0) {
             return std::vector<int>{};
         }
         for (;;) {
             fmt::print(os, "{}", message);
-            
+
             std::vector<int> v{};
             bool quit_read{ false };
             bool valid_input{ true };
@@ -140,28 +140,23 @@ namespace rtc::console {
                         if (not is_istream_clear(iss)) {
                             fmt::print(os, "\tError: invalid input\n");
                             valid_input = false;
-                        }
-                        else {
+                        } else {
                             quit_read = true;
                         }
-                    }
-                    else {
+                    } else {
                         int i{ 0 };
                         auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), i);
                         if (ec == std::errc{}) {
                             if (ptr != s.data() + s.size()) {
                                 fmt::print(os, "\tError: invalid input\n");
                                 valid_input = false;
-                            }
-                            else if (i < 0 || i < lower_limit || i >= upper_limit) {
+                            } else if (i < 0 || i < lower_limit || i >= upper_limit) {
                                 fmt::print(os, "\tError: number {} not within the limits\n", i);
                                 valid_input = false;
-                            }
-                            else {
+                            } else {
                                 v.push_back(i);
                             }
-                        }
-                        else {
+                        } else {
                             fmt::print(os, "\tError: invalid input\n");
                             valid_input = false;
                         }
@@ -181,7 +176,7 @@ namespace rtc::console {
         const std::string& message,
         size_t minimum_list_size,
         int lower_limit,
-        int upper_limit = std::numeric_limits<int>::max()) {
+        int upper_limit = (std::numeric_limits<int>::max)()) {
 
         return read_list_of_positive_numbers(std::cin, std::cout, message, minimum_list_size, lower_limit, upper_limit);
     }
@@ -199,8 +194,7 @@ namespace rtc::console {
                 std::count_if(ret.begin(), ret.end(), [](auto& n) { return std::isdigit(n) != 0; }) != 10) {
 
                 std::cout << "\tError: invalid input\n";
-            }
-            else {
+            } else {
                 valid_input = true;
             }
             if (!valid_input) {
