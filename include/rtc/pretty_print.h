@@ -16,11 +16,6 @@ namespace rtc::pretty_print {
         std::string value{ default_indentation_value };
     };
 
-    inline std::ostream& operator<<(std::ostream& os, const indentation& i) {
-        fmt::print(os, "{}", i);
-        return os;
-    }
-
     inline indentation operator+(const indentation& i, size_t increase) {
         return indentation{ i.level + increase, i.value };
     }
@@ -42,3 +37,8 @@ struct fmt::formatter<rtc::pretty_print::indentation> {
         return fmt::format_to(ctx.out(), "{}", fmt::join(ranges::views::repeat_n(i.value, i.level), ""));
     }
 };
+
+inline std::ostream& operator<<(std::ostream& os, const rtc::pretty_print::indentation& i) {
+    fmt::print(os, "{}", i);
+    return os;
+}
