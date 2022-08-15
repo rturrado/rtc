@@ -18,7 +18,7 @@ FetchContent_Declare(fmt
 )
 FetchContent_Declare(googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG "af29db7ec28d6df1c7f0f745186884091e602e07"
+    GIT_TAG "61720589cbef9707b3c5247d02141a7c31e2876f"
 )
 FetchContent_Declare(range-v3
     GIT_REPOSITORY https://github.com/ericniebler/range-v3.git

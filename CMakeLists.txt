@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
 
+if (POLICY CMP0066)
+    cmake_policy(SET CMP0066 NEW)
+endif()
+if (POLICY CMP0126)
+    cmake_policy(SET CMP0126 NEW)
+endif()
+
 project("rtc"
     VERSION 1.1
     DESCRIPTION "Some utilities I use in different C++ projects."
