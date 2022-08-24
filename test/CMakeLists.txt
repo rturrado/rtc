@@ -28,7 +28,11 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(fmt googletest range-v3)
 
 add_executable(${PROJECT_NAME}_test ${test_sources})
-target_compile_features(${PROJECT_NAME}_test PRIVATE cxx_std_23)
+if(MSVC)
+    target_compile_features(${PROJECT_NAME}_test PRIVATE cxx_std_23)
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
+endif()
 target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} fmt gmock gtest_main range-v3)
 
 include(GoogleTest)
