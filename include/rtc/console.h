@@ -206,8 +206,7 @@ namespace rtc::console {
     }
 
 
-    inline void clear_screen()
-    {
+    inline void clear_screen() {
 #if defined _WIN32
         std::system("cls");
 #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
@@ -218,8 +217,7 @@ namespace rtc::console {
     }
 
 
-    inline void wait_for_key_pressed()
-    {
+    inline void wait_for_key_pressed() {
 #if defined _WIN32
         [[maybe_unused]] int i = _getch();
 #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
