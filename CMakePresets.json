@@ -21,7 +21,7 @@
             "debug": {
                 "output": true
             }
-        }, /*
+        },
         {
             "name": "conf-windows-common",
             "description": "Windows settings for MSBuild toolchain that apply to msvc and clang",
@@ -40,7 +40,7 @@
                 "value": "host=x64",
                 "strategy": "external"
             }
-        },*/
+        },
         {
             "name": "conf-unixlike-common",
             "description": "Unix-like OS settings for gcc and clang toolchains",
@@ -59,7 +59,7 @@
                     "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
                 }
             }
-        }, /*
+        },
         {
             "name": "windows-msvc-debug",
             "displayName": "msvc Debug",
@@ -111,7 +111,7 @@
                 "RTC_BUILD_BENCHMARKS": true,
                 "BUILD_TESTING": false
             }
-        },*/
+        },
 
         {
             "name": "unixlike-clang-debug",
@@ -125,7 +125,7 @@
                 "RTC_BUILD_TESTS": true,
                 "ASAN_ENABLED": true
             }
-        } /*,
+        },
         {
             "name": "unixlike-clang-release",
             "displayName": "clang Release",
@@ -138,9 +138,9 @@
                 "THE_MODERN_C++_CHALLENGE_BUILD_BENCHMARKS": true,
                 "BUILD_TESTING": false
             }
-        }*/
+        }
     ],
-    "buildPresets": [ /*
+    "buildPresets": [
         {
             "name": "windows-msvc-debug",
             "configurePreset": "windows-msvc-debug",
@@ -156,7 +156,7 @@
             "description": "Build x64 Unix-like OS gcc Debug",
             "configuration": "Debug",
             "verbose": true
-        },*/
+        },
         {
             "name": "unixlike-clang-debug",
             "configurePreset": "unixlike-clang-debug",

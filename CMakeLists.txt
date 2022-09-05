@@ -23,14 +23,7 @@ target_include_directories(${PROJECT_NAME} INTERFACE
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-if(MSVC)
-    target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
-elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
-endif()
-if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    target_compile_options(${PROJECT_NAME} INTERFACE -DLIBCXX_ENABLE_INCOMPLETE_FEATURES=ON)
-endif()
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
 
 if(RTC_BUILD_TESTS)
     enable_testing()
