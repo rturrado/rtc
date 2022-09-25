@@ -111,33 +111,6 @@
                 "RTC_BUILD_BENCHMARKS": true,
                 "BUILD_TESTING": false
             }
-        },
-
-        {
-            "name": "unixlike-clang-debug",
-            "displayName": "clang Debug",
-            "description": "Target Unix-like OS with the clang compiler, debug build type",
-            "inherits": "conf-unixlike-common",
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang",
-                "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "RTC_BUILD_TESTS": true,
-                "ASAN_ENABLED": true
-            }
-        },
-        {
-            "name": "unixlike-clang-release",
-            "displayName": "clang Release",
-            "description": "Target Unix-like OS with the clang compiler, release build type",
-            "inherits": "conf-unixlike-common",
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang",
-                "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "THE_MODERN_C++_CHALLENGE_BUILD_BENCHMARKS": true,
-                "BUILD_TESTING": false
-            }
         }
     ],
     "buildPresets": [
@@ -154,14 +127,6 @@
             "configurePreset": "unixlike-gcc-debug",
             "displayName": "Build unixlike-gcc-debug",
             "description": "Build x64 Unix-like OS gcc Debug",
-            "configuration": "Debug",
-            "verbose": true
-        },
-        {
-            "name": "unixlike-clang-debug",
-            "configurePreset": "unixlike-clang-debug",
-            "displayName": "Build unixlike-clang-debug",
-            "description": "Build x64 Unix-like OS clang Debug",
             "configuration": "Debug",
             "verbose": true
         }

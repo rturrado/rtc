@@ -1,5 +1,8 @@
 #pragma once
 
+#include "fmt/ranges.h"
+#include "fmt/ostream.h"
+
 #include <algorithm>  // binary_search, count_if, sort
 #include <charconv>  // from_chars
 #include <cctype>  // isdigit
@@ -7,8 +10,6 @@
 #include <conio.h>  // _getch
 #endif
 #include <cstdlib>  // system
-#include <fmt/ranges.h>
-#include <fmt/ostream.h>
 #include <ios>  // dec, streamsize
 #include <iostream>  // cin, cout
 #include <istream>
@@ -44,7 +45,7 @@ namespace rtc::console {
         const std::string& message,
         std::vector<char> options) {
 
-        if (options.size() == 0) {
+        if (options.empty()) {
             return '\0';
         }
 
@@ -63,7 +64,7 @@ namespace rtc::console {
     }
 
     inline char read_char(const std::string& message, std::vector<char> options) {
-        return read_char(std::cin, std::cout, message, options);
+        return read_char(std::cin, std::cout, message, std::move(options));
     }
 
 
