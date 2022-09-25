@@ -64,7 +64,7 @@ namespace rtc::filesystem {
         return true;
     }
 
-    inline bool are_filesystem_trees_equal(const fs::path& path_1, const fs::path& path_2) {
+    inline bool are_filesystem_trees_equal(const fs::path& path_1, const fs::path& path_2, const fs::directory_options& options) {
         if (not fs::exists(path_1)) {
             throw file_path_does_not_exist_error{ path_1.generic_string() };
         }
@@ -78,8 +78,8 @@ namespace rtc::filesystem {
             std::vector<fs::path> entries_1{};
             std::vector<fs::path> entries_2{};
 
-            std::copy(fs::recursive_directory_iterator{ path_1 }, {}, std::back_inserter(entries_1));
-            std::copy(fs::recursive_directory_iterator{ path_2 }, {}, std::back_inserter(entries_2));
+            std::copy(fs::recursive_directory_iterator{ path_1, options }, {}, std::back_inserter(entries_1));
+            std::copy(fs::recursive_directory_iterator{ path_2, options }, {}, std::back_inserter(entries_2));
 
             std::sort(std::begin(entries_1), std::end(entries_1));
             std::sort(std::begin(entries_2), std::end(entries_2));
