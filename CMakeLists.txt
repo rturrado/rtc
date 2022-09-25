@@ -36,23 +36,6 @@ target_include_directories(${PROJECT_NAME} INTERFACE
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
 
-# Target compile options
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} INTERFACE
-        /W3 /WX /w34996
-        /D_CONSOLE /DCONSOLE
-        /D_UNICODE /DUNICODE
-        /diagnostics:column /EHsc /FC /fp:precise /Gd /GS /sdl /utf-8 /Zc:inline
-    )
-elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    target_compile_options(${PROJECT_NAME} INTERFACE
-        -pedantic-errors -Werror -Wall -Wextra
-        -Wl,-z,defs
-        -Wno-deprecated
-        -Wconversion -Wsign-conversion -Wno-sign-conversion  # do not sort flags; order matters
-    )
-endif()
-
 if(RTC_BUILD_TESTS)
     enable_testing()
     add_subdirectory(test)
