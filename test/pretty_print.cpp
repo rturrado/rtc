@@ -1,10 +1,9 @@
 #include "rtc/pretty_print.h"
 
-#include "fmt/format.h"
-#include "fmt/ostream.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
-
+#include <fmt/format.h>
+#include <fmt/ostream.h>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 #include <sstream>  // ostringstream
 
 using namespace rtc::pretty_print;

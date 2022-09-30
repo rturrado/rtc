@@ -82,7 +82,6 @@
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "RTC_BUILD_BENCHMARKS": true,
                 "BUILD_TESTING": false
             }
         },
@@ -108,7 +107,6 @@
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "RTC_BUILD_BENCHMARKS": true,
                 "BUILD_TESTING": false
             }
         }
@@ -123,11 +121,27 @@
             "verbose": true
         },
         {
+            "name": "windows-msvc-release",
+            "configurePreset": "windows-msvc-release",
+            "displayName": "Build windows-msvc-release",
+            "description": "Build x64 Windows MSVC Release",
+            "configuration": "Release",
+            "verbose": true
+        },
+        {
             "name": "unixlike-gcc-debug",
             "configurePreset": "unixlike-gcc-debug",
             "displayName": "Build unixlike-gcc-debug",
             "description": "Build x64 Unix-like OS gcc Debug",
             "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "unixlike-gcc-release",
+            "configurePreset": "unixlike-gcc-release",
+            "displayName": "Build unixlike-gcc-release",
+            "description": "Build x64 Unix-like OS gcc Release",
+            "configuration": "Release",
             "verbose": true
         }
     ]

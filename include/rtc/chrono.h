@@ -1,8 +1,7 @@
 #pragma once
 
-#include "date/date.h"
-#include "fmt/format.h"
-
+#include <date/date.h>
+#include <format>
 #include <stdexcept>  // runtime_error
 #include <string>
 

@@ -1,7 +1,7 @@
 #include "rtc/typeinfo.h"
 
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 using namespace rtc::typeinfo;
 
