@@ -3,9 +3,6 @@
 #include <fmt/core.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <istream>
-#include <ostream>
-#include <sstream>  // istringstream, ostringstream
 #include <string>
 #include <vector>
 
@@ -43,7 +40,7 @@ TEST(read_char, valid_input) {
 
 class read_positive_number_test : public ::testing::Test {
 protected:
-    auto RunWith(
+    static auto RunWith(
         std::istringstream& iss,
         std::ostringstream& oss,
         int lower_limit,
@@ -129,7 +126,7 @@ TEST_F(read_positive_number_test, floating_number) {
 
 class read_list_of_positive_numbers_test : public ::testing::Test {
 protected:
-    auto RunWith(
+    static auto RunWith(
         std::istringstream& iss,
         std::ostringstream& oss,
         size_t minimum_list_size,

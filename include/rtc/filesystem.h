@@ -16,27 +16,27 @@ namespace fs = std::filesystem;
 
 namespace rtc::filesystem {
     struct file_path_does_not_exist_error : public std::runtime_error {
-        file_path_does_not_exist_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+        explicit file_path_does_not_exist_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
         static inline std::string message_{ "file path does not exist: " };
     };
     struct file_is_not_regular_error : public std::runtime_error {
-        file_is_not_regular_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+        explicit file_is_not_regular_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
         static inline std::string message_{ "file is not regular: " };
     };
     struct file_has_no_filename_error : public std::runtime_error {
-        file_has_no_filename_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+        explicit file_has_no_filename_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
         static inline std::string message_{ "file has no filename: " };
     };
     struct could_not_open_file_error : public std::runtime_error {
-        could_not_open_file_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+        explicit could_not_open_file_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
         static inline std::string message_{ "could not open file: " };
     };
     struct not_a_directory_error : public std::runtime_error {
-        not_a_directory_error(const std::string& path) : std::runtime_error{ message_ + path } {}
+        explicit not_a_directory_error(const std::string& path) : std::runtime_error{ message_ + path } {}
     private:
         static inline std::string message_{ "not a directory: " };
     };
@@ -58,11 +58,13 @@ namespace rtc::filesystem {
         if (path_1.filename() != path_2.filename()) {
             return false;
         }
-
-        return get_binary_file_content(path_1) == get_binary_file_content(path_2);
+        if (fs::is_regular_file(path_1) and fs::is_regular_file(path_2)) {
+            return get_binary_file_content(path_1) == get_binary_file_content(path_2);
+        }
+        return true;
     }
 
-    inline bool are_filesystem_trees_equal(const fs::path& path_1, const fs::path& path_2) {
+    inline bool are_filesystem_trees_equal(const fs::path& path_1, const fs::path& path_2, const fs::directory_options& options) {
         if (not fs::exists(path_1)) {
             throw file_path_does_not_exist_error{ path_1.generic_string() };
         }
@@ -76,8 +78,8 @@ namespace rtc::filesystem {
             std::vector<fs::path> entries_1{};
             std::vector<fs::path> entries_2{};
 
-            std::copy(fs::recursive_directory_iterator{ path_1 }, {}, std::back_inserter(entries_1));
-            std::copy(fs::recursive_directory_iterator{ path_2 }, {}, std::back_inserter(entries_2));
+            std::copy(fs::recursive_directory_iterator{ path_1, options }, {}, std::back_inserter(entries_1));
+            std::copy(fs::recursive_directory_iterator{ path_2, options }, {}, std::back_inserter(entries_2));
 
             std::sort(std::begin(entries_1), std::end(entries_1));
             std::sort(std::begin(entries_2), std::end(entries_2));

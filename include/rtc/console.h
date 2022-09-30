@@ -44,7 +44,7 @@ namespace rtc::console {
         const std::string& message,
         std::vector<char> options) {
 
-        if (options.size() == 0) {
+        if (options.empty()) {
             return '\0';
         }
 
@@ -63,7 +63,7 @@ namespace rtc::console {
     }
 
     inline char read_char(const std::string& message, std::vector<char> options) {
-        return read_char(std::cin, std::cout, message, options);
+        return read_char(std::cin, std::cout, message, std::move(options));
     }
 
 

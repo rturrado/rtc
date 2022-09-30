@@ -1,9 +1,8 @@
 #include "rtc/chrono.h"
 
+#include <chrono>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include <chrono>
 #include <string>
 
 namespace ch = std::chrono;
