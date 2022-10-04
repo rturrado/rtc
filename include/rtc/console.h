@@ -208,7 +208,7 @@ namespace rtc::console {
 
     inline void clear_screen() {
 #if defined _WIN32
-        ([[maybe_unused]] int i{ std::system("cls") };
+        [[maybe_unused]] int i{ std::system("cls") };
 #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
         [[maybe_unused]] int i{ std::system("clear") };
 #elif defined (__APPLE__)
@@ -223,7 +223,7 @@ namespace rtc::console {
 #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
         [[maybe_unused]] int i{ std::system("read") };
 #elif defined (__APPLE__)
-        ([[maybe_unused]] int i{ std::system("read") };
+        [[maybe_unused]] int i{ std::system("read") };
 #endif
     }
 }  // namespace rtc::console
