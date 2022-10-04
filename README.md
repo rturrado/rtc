@@ -1,4 +1,5 @@
 [![main CI](https://github.com/rturrado/rtc/actions/workflows/main_ci.yml/badge.svg)](https://github.com/rturrado/rtc/actions/workflows/main_ci.yml)
+[![unixlike-builds CI](https://github.com/rturrado/rtc/actions/workflows/unixlike-builds_ci.yml/badge.svg)](https://github.com/rturrado/rtc/actions/workflows/unixlike-builds_ci.yml)
 
 # rtc
 
