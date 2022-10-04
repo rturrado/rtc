@@ -1,0 +1,50 @@
+name: unixlike-builds CI
+
+on:
+  push:
+    branches: [ unixlike-builds ]
+  pull_request:
+    branches: [ unixlike-builds ]
+
+jobs:
+  unixlike-gcc-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install gcc-12 and g++-12
+        run: |
+          sudo apt update && sudo apt upgrade
+          sudo apt install gcc-12 g++-12
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gcov gcov /usr/bin/gcov-12
+        shell: bash
+
+      - uses: actions/checkout@v3
+
+      - uses: lukka/get-cmake@latest
+
+      - name: Configure and build tests
+        run: |
+          cmake --preset unixlike-gcc-debug
+          cmake --build --preset unixlike-gcc-debug
+      - name: Run tests
+        working-directory: ${{github.workspace}}/out/build/unixlike-gcc-debug/test
+        run: ./Debug/rtc_test --gtest_brief=1 --gtest_also_run_disabled_tests
+        shell: bash
+
+  unixlike-gcc-release:
+    runs-on: windows-latest
+    steps:
+      - name: Install gcc-12 and g++-12
+        run: |
+          sudo apt update && sudo apt upgrade
+          sudo apt install gcc-12 g++-12
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gcov gcov /usr/bin/gcov-12
+        shell: bash
+
+      - uses: actions/checkout@v3
+
+      - uses: lukka/get-cmake@latest
+
+      - name: Configure and build no-tests
+        run: |
+          cmake --preset unixlike-gcc-release
+          cmake --build --preset unixlike-gcc-release
