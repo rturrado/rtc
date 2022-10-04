@@ -41,9 +41,7 @@ The following code snippet assumes that you are within the cloned directory.
 Notice the library will be installed under `${CMAKE_INSTALL_PREFIX}`.<br/>
 You can change the installation `<folder>` using the option `-DCMAKE_INSTALL_PREFIX=<folder>`.
 
-Also, you could use other build types, e.g. `Debug` or `RelWithDebInfo`.
-
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release
-cmake --build . --install
+cmake --preset windows-msvc-release
+cmake --build --preset windows-msvc-release --install
 ```
