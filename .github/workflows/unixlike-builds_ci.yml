@@ -8,7 +8,7 @@ on:
 
 jobs:
   unixlike-gcc-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Install gcc-12 and g++-12
         run: |
@@ -31,7 +31,7 @@ jobs:
         shell: bash
 
   unixlike-gcc-release:
-    runs-on: windows-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Install gcc-12 and g++-12
         run: |
