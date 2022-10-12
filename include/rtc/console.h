@@ -31,9 +31,7 @@ namespace rtc::console {
     // Clear input stream
     inline void clear_istream(std::istream& is) {
         is.clear();
-        if (std::streamsize n = is.rdbuf()->in_avail()) {  // ignores whatever there may be within is
-            is.ignore(n);
-        }
+        is.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');  // ignores whatever there may be within is
     }
 
 
